@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Транзакциялар</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-2 sidebar d-none d-md-block">
+            <div class="brand-title">
+                <i class="fas fa-wallet" style="color: var(--accent-color);"></i>BAS.
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a class="nav-link" th:href="@{/home}">Басты бет</a></li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/}">
+                        <i class="fas fa-exchange-alt"></i> Транзакциялар
+                    </a>
+                </li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/reports}">Есептер</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/add}">Қосу</a></li>
+            </ul>
+        </nav>
+
+        <main class="col-md-10 main-content">
+            <div class="row">
+                <div class="col-lg-5 mb-4">
+                    <h3 class="mb-4">Әмияндарым</h3>
+                    <div class="bank-card mb-4">
+                        <div class="d-flex justify-content-between">
+                            <span>BAS. <small class="text-white-50">Банктер</small></span>
+                            <i class="fas fa-wifi"></i>
+                        </div>
+                        <div class="card-number">8595 2548 **** 0925</div>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div>
+                                <small class="text-white-50">Баланс</small><br>
+                                <span class="fs-4 fw-bold">$5,240.00</span>
+                            </div>
+                            <i class="fab fa-cc-visa fa-2x"></i>
+                        </div>
+                    </div>
+
+                    <a th:href="@{/add}" class="btn-maglo w-100 text-center">
+                        <i class="fas fa-plus me-2"></i> Жаңа транзакция қосу
+                    </a>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3>Төлемдерім</h3>
+                        <div>
+                            <a th:href="@{/(sort='SortByDate')}" class="text-white me-3 text-decoration-none">Барлығы</a>
+                            <a th:href="@{/(sort='SortByAmount')}" class="text-secondary text-decoration-none">Сома бойынша</a>
+                        </div>
+                    </div>
+
+                    <div class="custom-card">
+                        <div th:each="transaction : ${transactions}" class="transaction-item">
+                            <div class="d-flex align-items-center">
+                                <div class="transaction-icon">
+                                    <i th:if="${transaction.type.name() == 'EXPENSE'}" class="fas fa-shopping-cart text-warning"></i>
+                                    <i th:if="${transaction.type.name() == 'INCOME'}" class="fas fa-arrow-down text-success"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0" th:text="${transaction.category}">Category</h6>
+                                    <small class="text-secondary" th:text="${transaction.description}">Description</small> <br>
+                                    <small class="text-secondary" th:text="${transaction.date}">Date</small>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <h6 class="mb-0 fw-bold"
+                                    th:text="${transaction.type.name() == 'INCOME' ? '+' : '-'} + ${transaction.amount}"
+                                    th:classappend="${transaction.type.name() == 'INCOME' ? 'amount-positive' : 'amount-negative'}">
+                                    Amount
+                                </h6>
+                                <small class="text-secondary" th:text="${transaction.type}">Type</small>
+                            </div>
+                        </div>
+
+                        <div th:if="${transactions.isEmpty()}" class="text-center py-4 text-secondary">
+                            Транзакциялар жоқ
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+</html>
