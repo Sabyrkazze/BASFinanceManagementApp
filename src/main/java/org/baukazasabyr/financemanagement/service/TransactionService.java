@@ -2,6 +2,7 @@ package org.baukazasabyr.financemanagement.service;
 
 import org.baukazasabyr.financemanagement.model.Transaction;
 import org.baukazasabyr.financemanagement.repository.TransactionRepository;
+import org.baukazasabyr.financemanagement.service.patterns.decorator.CategoryReportDecorator;
 import org.baukazasabyr.financemanagement.service.patterns.decorator.DateRangeReportDecorator;
 import org.baukazasabyr.financemanagement.service.patterns.decorator.SimpleTransactionReport;
 import org.baukazasabyr.financemanagement.service.patterns.decorator.TransactionReport;
@@ -64,11 +65,24 @@ public class TransactionService {
         repository.save(transaction);
     }
 
-    public List<Transaction> getReport(String filterType, LocalDate startDate, LocalDate endDate) {
+//    public List<Transaction> getReport(String filterType, LocalDate startDate, LocalDate endDate) {
+//        TransactionReport report = new SimpleTransactionReport(repository);
+//
+//        if ("DateRange".equals(filterType) && startDate != null && endDate != null) {
+//            report = new DateRangeReportDecorator(report, startDate, endDate, repository);
+//        }
+//
+//        return report.generateReport();
+//    }
+    public List<Transaction> getReport(String filterType, LocalDate startDate, LocalDate endDate, String category) {
         TransactionReport report = new SimpleTransactionReport(repository);
 
         if ("DateRange".equals(filterType) && startDate != null && endDate != null) {
             report = new DateRangeReportDecorator(report, startDate, endDate, repository);
+        }
+
+        else if ("Category".equals(filterType) && category != null && !category.isEmpty()) {
+            report = new CategoryReportDecorator(report, category, repository);
         }
 
         return report.generateReport();

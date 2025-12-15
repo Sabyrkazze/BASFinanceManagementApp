@@ -2,6 +2,10 @@ package org.baukazasabyr.financemanagement.controller;
 
 import org.baukazasabyr.financemanagement.model.Transaction;
 import org.baukazasabyr.financemanagement.service.TransactionService;
+import org.baukazasabyr.financemanagement.service.patterns.decorator.CategoryReportDecorator;
+import org.baukazasabyr.financemanagement.service.patterns.decorator.DateRangeReportDecorator;
+import org.baukazasabyr.financemanagement.service.patterns.decorator.SimpleTransactionReport;
+import org.baukazasabyr.financemanagement.service.patterns.decorator.TransactionReport;
 import org.baukazasabyr.financemanagement.util.TransactionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -62,17 +66,17 @@ public class TransactionController {
 
     @GetMapping("/reports")
     public String getReports(
-            @RequestParam(required = false, defaultValue = "All") String filterType, // defaultValue қостық
+            @RequestParam(required = false, defaultValue = "All") String filterType,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
-            Model model) {
+            @RequestParam(required = false) String category,Model model) {
 
-        List<Transaction> reportList = transactionService.getReport(filterType, startDate, endDate);
+        List<Transaction> reportList = transactionService.getReport(filterType, startDate, endDate, category);
 
         model.addAttribute("reportList", reportList);
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
-
+        model.addAttribute("category", category);
         model.addAttribute("filterType", filterType);
 
         return "reports";

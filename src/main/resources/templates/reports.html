@@ -32,20 +32,26 @@
                 <form th:action="@{/reports}" method="get" class="row g-3 align-items-end">
                     <div class="col-md-3">
                         <label class="form-label text-secondary">Фильтр түрі</label>
-                        <select name="filterType" class="form-select">
+                        <select name="filterType" class="form-select" id="filterType" onchange="toggleInputs()">
                             <option value="All" th:selected="${filterType == 'All'}">Барлығы</option>
                             <option value="DateRange" th:selected="${filterType == 'DateRange'}">Уақыт аралығы</option>
+                            <option value="Category" th:selected="${filterType == 'Category'}">Санат бойынша</option>
                         </select>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-3" id="startDateBlock" style="display: none;">
                         <label class="form-label text-secondary">Басталу күні</label>
                         <input type="date" name="startDate" class="form-control" th:value="${startDate}">
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-3" id="endDateBlock" style="display: none;">
                         <label class="form-label text-secondary">Аяқталу күні</label>
                         <input type="date" name="endDate" class="form-control" th:value="${endDate}">
+                    </div>
+
+                    <div class="col-md-3" id="categoryBlock" style="display: none;">
+                        <label class="form-label text-secondary">Санат аты</label>
+                        <input type="text" name="category" class="form-control" placeholder="Мысалы: Food" th:value="${category}">
                     </div>
 
                     <div class="col-md-3">
@@ -90,5 +96,32 @@
         </main>
     </div>
 </div>
+
+<script>
+    function toggleInputs() {
+        const filterType = document.getElementById('filterType').value;
+        const startDateBlock = document.getElementById('startDateBlock');
+        const endDateBlock = document.getElementById('endDateBlock');
+        const categoryBlock = document.getElementById('categoryBlock');
+
+        startDateBlock.style.display = 'none';
+        endDateBlock.style.display = 'none';
+        categoryBlock.style.display = 'none';
+
+
+        if (filterType === 'DateRange') {
+            startDateBlock.style.display = 'block';
+            endDateBlock.style.display = 'block';
+        } else if (filterType === 'Category') {
+            categoryBlock.style.display = 'block';
+        }
+    }
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        toggleInputs();
+    });
+</script>
+
 </body>
 </html>
