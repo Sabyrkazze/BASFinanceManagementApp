@@ -17,6 +17,6 @@ public class CategoryReportDecorator extends ReportDecorator {
 
     @Override
     public List<Transaction> generateReport() {
-        return repository.findByCategory(category);
+        return repository.findByCategoryIgnoreCase(category);
     }
 }

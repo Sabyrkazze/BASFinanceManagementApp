@@ -31,7 +31,7 @@
             <div class="custom-card mb-4">
                 <form th:action="@{/reports}" method="get" class="row g-3 align-items-end">
                     <div class="col-md-3">
-                        <label class="form-label text-secondary">Фильтр түрі</label>
+                        <label class="form-label text-secondary">Сүзу түрі</label>
                         <select name="filterType" class="form-select" id="filterType" onchange="toggleInputs()">
                             <option value="All" th:selected="${filterType == 'All'}">Барлығы</option>
                             <option value="DateRange" th:selected="${filterType == 'DateRange'}">Уақыт аралығы</option>
@@ -51,7 +51,7 @@
 
                     <div class="col-md-3" id="categoryBlock" style="display: none;">
                         <label class="form-label text-secondary">Санат аты</label>
-                        <input type="text" name="category" class="form-control" placeholder="Мысалы: Food" th:value="${category}">
+                        <input type="text" name="category" class="form-control" placeholder="Мысалы: Тамақ" th:value="${category}">
                     </div>
 
                     <div class="col-md-3">
@@ -87,7 +87,7 @@
                             th:classappend="${t.type.name() == 'INCOME' ? 'amount-positive' : 'amount-negative'}"
                             th:text="${t.amount}">100.00</td>
                     </tr>
-                    <tr th:if="${reportList == null or reportList.empty}">
+                    <tr th:if="${reportList == null or reportList.isEmpty()}">
                         <td colspan="5" class="text-center py-4 text-secondary">Деректер табылмады</td>
                     </tr>
                     </tbody>
@@ -104,19 +104,18 @@
         const endDateBlock = document.getElementById('endDateBlock');
         const categoryBlock = document.getElementById('categoryBlock');
 
-        startDateBlock.style.display = 'none';
-        endDateBlock.style.display = 'none';
-        categoryBlock.style.display = 'none';
+        if(startDateBlock) startDateBlock.style.display = 'none';
+        if(endDateBlock) endDateBlock.style.display = 'none';
+        if(categoryBlock) categoryBlock.style.display = 'none';
 
 
         if (filterType === 'DateRange') {
-            startDateBlock.style.display = 'block';
-            endDateBlock.style.display = 'block';
+            if(startDateBlock) startDateBlock.style.display = 'block';
+            if(endDateBlock) endDateBlock.style.display = 'block';
         } else if (filterType === 'Category') {
-            categoryBlock.style.display = 'block';
+            if(categoryBlock) categoryBlock.style.display = 'block';
         }
     }
-
 
     document.addEventListener("DOMContentLoaded", function() {
         toggleInputs();
