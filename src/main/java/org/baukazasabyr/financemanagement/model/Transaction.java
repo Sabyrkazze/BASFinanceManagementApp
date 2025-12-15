@@ -14,18 +14,12 @@ public abstract class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String description;
-
     private BigDecimal amount;
-
     private LocalDate date;
-
     private String category;
 
     public abstract TransactionType getType();
-
-
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getDescription() { return description; }

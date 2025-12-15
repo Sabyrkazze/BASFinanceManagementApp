@@ -19,7 +19,6 @@ import java.util.Map;
 public class TransactionService {
 
     private final TransactionRepository repository;
-    // Spring барлық Factory және Strategy кластарын осы карталарға (Map) жинайды
     private final Map<String, TransactionFactory> factoryMap;
     private final Map<String, SortingStrategy> strategyMap;
 
@@ -33,9 +32,7 @@ public class TransactionService {
 
     public List<Transaction> getAllTransactions(String sortStrategyName) {
         List<Transaction> transactions = repository.findAll();
-
         String strategyBeanName = Character.toLowerCase(sortStrategyName.charAt(0)) + sortStrategyName.substring(1) + "Strategy";
-
         SortingStrategy strategy = strategyMap.get(strategyBeanName);
 
         if (strategy != null) {
